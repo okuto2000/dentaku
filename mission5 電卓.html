@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ja">
+   <head>
+      <meta charset="UTF-8">
+      <title>電卓</title>
+      <script>
+         var result = "";
+var is_calc = false;
+window.onload = function () {
+  result = document.getElementById('result');
+};
+function c_click(){
+  result.value = "0";
+  is_calc = false;
+}
+function number(val){
+  if(is_calc)  result.value = "0";
+  is_calc = false;  
+
+  if(result.value =="0" && val == "0"){
+    result.value = "0";
+  }else if(result.value == "0" && val == "."){
+    result.value = "0.";
+  }else if(result.value == "0"){
+    result.value = val;
+  }else{
+    result.value += val;
+  }
+}
+function arithmetic(val){
+  if(is_calc)  is_calc = false;
+  
+  if(is_ope_last()){
+    result.value = result.value.slice(0, -1) + val;
+  } else {
+    result.value += val;
+  }
+}
+function equal(){
+  if(is_ope_last())  result.value = result.value.slice(0, -1);
+  var temp = new Function("return " + result.value.replaceAll("×", "*").replaceAll("÷", "/"))();
+  if(temp == Infinity || Number.isNaN(temp)){
+    result.value = "Error";
+  }else{
+    result.value = temp;
+    is_calc = true;
+  }
+}
+
+function is_ope_last(){
+  return ["+","-","×","÷"].includes(result.value.toString().slice(-1));
+}
+      </script>
+   </head>
+    
+    <body>
+       <div id="calc">
+      <div>
+     <input readonly id="result" type="text" value="0">
+   </div>
+     <div>
+     <button onclick="number(this.innerHTML)">7</button>   
+     <button onclick="number(this.innerHTML)">8</button>   
+     <button onclick="number(this.innerHTML)">9</button>   
+     <button onclick="arithmetic(this.innerHTML)">×</button>   
+     <button onclick="arithmetic(this.innerHTML)">÷</button> 
+    </div>   
+     <div>
+        <button onclick="number(this.innerHTML)">4</button>   
+        <button onclick="number(this.innerHTML)">5</button>   
+        <button onclick="number(this.innerHTML)">6</button>   
+        <button onclick="arithmetic(this.innerHTML)">+</button>   
+        <button onclick="arithmetic(this.innerHTML)">-</button>   
+     </div>  
+     <div>
+        <button onclick="number(this.innerHTML)">1</button>   
+        <button onclick="number(this.innerHTML)">2</button>   
+        <button onclick="number(this.innerHTML)">3</button>   
+        <button onclick="equal()">=</button>   
+        <button onclick="c_click()">C</button>   
+     </div>
+     <div>
+        <button onclick="number(this.innerHTML)">0</button>   
+        <button onclick="number(this.innerHTML)">.</button>   
+     </div>
+     </div>
+   </div>
+    </body>
+</html>
